@@ -3,119 +3,25 @@
 
 		<div class="classify">
 			
-			<!--搜索板块-->
+			<!-- 搜索板块 -->
 			<div class="topSearch">
 				<input type="text"/>
 			</div>
-			
+			<!-- 全部内容 -->
 			<div class="main">
-				<!--左边导航-->
+				<!-- 左边导航 -->
 				<div class="menu">
 					<ul>
-						<li class="bgc"><p class="pborder">推荐</p></li>
-						<li ><p>净菜</p></li>
-						<li ><p>蔬菜</p></li>
-						<li ><p>水果</p></li>
-						<li ><p>肉类</p></li>
-						<li ><p>禽蛋</p></li>
-						<li ><p>水产</p></li>
-						<li ><p>点心速食</p></li>
-						<li ><p>乳饮西点</p></li>
-						<li ><p>粮油副食</p></li>
-						<li ><p>休闲食品</p></li>
-						<li ><p>简单烘培</p></li>
+						<li ><router-link to="/category/tuijian">推荐</router-link></li>
+						<li v-for="nav in list">
+							<router-link to="/category/goods">{{ nav.name }}</router-link>
+							<!--<span>{{ nav.id }}</span>-->
+						</li>
 					</ul>
 				</div>
-				<!--右边内容-->
-				<div class="classifyone">
-					<div class="content">
-						<div class="tuijian">
-							<p>我厨精选</p>
-							<div>
-								<figure>
-									<a ui-sref="weekoffer">
-										<img src="./imgs/fa3c5da8-006c-4bf3-a263-562b318a3fd0.jpg" />
-									</a>
-									<figcaption>本周特惠</figcaption>
-								</figure>
-								<figure>
-									<a ui-sref="weekoffer">
-										<img src="./imgs/fa3c5da8-006c-4bf3-a263-562b318a3fd0.jpg" />
-									</a>
-									<figcaption>本周特惠</figcaption>
-								</figure>
-								<figure>
-									<a ui-sref="weekoffer">
-										<img src="./imgs/fa3c5da8-006c-4bf3-a263-562b318a3fd0.jpg" />
-									</a>
-									<figcaption>本周特惠</figcaption>
-								</figure>
-								<figure>
-									<a ui-sref="weekoffer">
-										<img src="./imgs/fa3c5da8-006c-4bf3-a263-562b318a3fd0.jpg" />
-									</a>
-									<figcaption>本周特惠</figcaption>
-								</figure>
-								<figure>
-									<a ui-sref="weekoffer">
-										<img src="./imgs/fa3c5da8-006c-4bf3-a263-562b318a3fd0.jpg" />
-									</a>
-									<figcaption>本周特惠</figcaption>
-								</figure>
-								<figure>
-									<a ui-sref="weekoffer">
-										<img src="./imgs/fa3c5da8-006c-4bf3-a263-562b318a3fd0.jpg" />
-									</a>
-									<figcaption>本周特惠</figcaption>
-								</figure>
-							</div>
-						</div>
-						
-						<div class="tuijian">
-							<p>品牌专区</p>
-							<div>
-								<figure>
-									<a href="#">
-										<img src="./imgs/4d09e626-b733-4d4f-ad70-33f884de97d2.jpg" />
-									</a>
-									<figcaption>我厨优选</figcaption>
-								</figure>
-								<figure>
-									<a href="#">
-										<img src="./imgs/4d09e626-b733-4d4f-ad70-33f884de97d2.jpg" />
-									</a>
-									<figcaption>我厨优选</figcaption>
-								</figure>
-								<figure>
-									<a href="#">
-										<img src="./imgs/4d09e626-b733-4d4f-ad70-33f884de97d2.jpg" />
-									</a>
-									<figcaption>我厨优选</figcaption>
-								</figure>
-								<figure>
-									<a href="#">
-										<img src="./imgs/4d09e626-b733-4d4f-ad70-33f884de97d2.jpg" />
-									</a>
-									<figcaption>我厨优选</figcaption>
-								</figure>
-								<figure>
-									<a href="#">
-										<img src="./imgs/4d09e626-b733-4d4f-ad70-33f884de97d2.jpg" />
-									</a>
-									<figcaption>我厨优选</figcaption>
-								</figure>
-								<figure>
-									<a href="#">
-										<img src="./imgs/4d09e626-b733-4d4f-ad70-33f884de97d2.jpg" />
-									</a>
-									<figcaption>我厨优选</figcaption>
-								</figure>
-							</div>
-						</div>
-					</div>	
-				</div>
-				
-			</div>	
+				<!-- 右边菜单 引入组件 -->
+				<router-view></router-view>
+			</div>
 			
 		</div>
 		
@@ -123,10 +29,30 @@
 </template>
 
 <script>
+	export default {
+		data() {
+			return {
+				navs: []
+			}
+		},
+		computed:{
+            list:function(){
+                return this.navs.filter(function(item){  
+                    return item.parentId==0
+                })  
+            }
+        },
+        created() {
+			this.$http.get('http://api5.wochu.cn/client/v1/goods/GetCategoryListByMenuId?parameters=%7B%22menu%22%3A0%7D')
+				.then(function(res){
+					this.navs = res.body.data;
+					console.log(this.navs.id)
+				})
+		}
+	}
 </script>
 
 <style>
-
 /*搜索框*/
 .topSearch{
 	background-color: #fff;
@@ -146,7 +72,7 @@
     outline:medium;
     text-indent: 0.834492rem;
 }
-/*内容*/
+/*全部内容*/
 .main{
 	height: 15.01rem;
 	color: #666;
@@ -163,51 +89,22 @@
 .main .menu ul li{
 	height: 1.2356rem;
 	border-bottom: 1px solid #e6e6e6;
-	text-align:center;
+	display: flex;
+	align-items: center;
 }
-.main .menu ul li p{
+.main .menu ul li a{
+	color: #666;
 	height: 0.5627rem;
-	line-height: 1.2356rem;
+	line-height: 0.5627rem;
+	width: 100%;
+	text-align: center;
 	font-size: 0.398rem;
-	border-left: .15rem solid #f96d16;
 }
 /*点击背景无色*/
-.bgc{ background-color:#f6f6f6; }
+.bgc{ background-color:#f6f6f6;}
 /*导航标*/
-.pborder{ border-left: .15rem solid #f96d16; }
-
-/*右边内容*/
-.main .classifyone{
-	float: left;
-	width: 78.663%;
-}
-.classifyone .content{
-	margin: 0 auto;
-	width: 7.3327rem;
-	height: 15.012rem;
-	margin-top: 0.22rem;
-	overflow-y: scroll;
-}
-.classifyone .content .tuijian p{
-	padding: 0.1rem;
-}
-.classifyone .content .tuijian div{
-	display: flex;
-	justify-content: space-around;
-	flex-wrap: wrap;
-	background-color: #FFFFFF;
-	padding-bottom: 0.282rem;
-}
-.classifyone .tuijian div figure{
-	padding: 0.11rem;
-}
-.classifyone .tuijian div figure img{
-	width: 2.1rem;
-	margin-bottom: 0.220348rem;
-	margin-top: 0.163333rem;
-}
-.classifyone .tuijian div figure figcaption{
-	text-align: center;
-	line-height: 0.305981rem;
+.pborder{
+	color: #f96d16; 
+	border-left: .15rem solid #f96d16; 
 }
 </style>

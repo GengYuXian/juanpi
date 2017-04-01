@@ -1,0 +1,3 @@
+分类：
+推荐：http://api5.wochu.cn/client/v1/goods/GetCategoryRecommendList
+商品分类：http://api5.wochu.cn/client/v1/goods/GetCategoryListByMenuId?parameters=%7B%22menu%22%3A0%7D

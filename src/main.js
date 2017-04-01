@@ -6,27 +6,40 @@ import Vue from 'vue'
 
 //引入路由
 import VueRouter from 'vue-router'
+//引入网络插件
+import VueResource from 'vue-resource'
 
 //导入app文件
 import App from './App'
 
 //使用路由
 Vue.use(VueRouter)
+//使用网络查件
+Vue.use(VueResource)
 
 Vue.config.productionTip = false
 
 //路由的编写
 //1、引入对应的文件
 import Home from './pages/home/home'
-import Category from './pages/category/category'
+
+import Category from './pages/category/category' // 父
+import Tuijian from './pages/category/tuijian' // 子
+import Goods from './pages/category/goods' // 子
+
 import Cart from './pages/cart/cart'
+
 import Mine from './pages/mine/mine'
 
 //2、编写规则
 const routes = [
 	{ path: '/', component: Home},
 	{ path: '/home', component: Home},
-	{ path: '/category', component: Category},
+	{ path: '/category', component: Category, children: [
+		{ path: '', component: Tuijian },
+		{ path: 'tuijian', component: Tuijian },
+		{ path: 'goods', component: Goods }
+	]},
 	{ path: '/cart', component: Cart},
 	{ path: '/mine', component: Mine}
 ]
