@@ -1,5 +1,5 @@
 <!--注意：template标签最后会消失掉，所以一定要写跟标签-->
-<template> 
+<template>
 	  <div id="app">
 	  	
 		    <footer class="tabbar">
@@ -46,6 +46,8 @@
 	  color: #898989;
 }
 #app .tabbar{
+		width: 100%;
+		height: 1.409rem;
 		border-top: 1px solid #fad1b6;
 		text-align: center;
 		display: flex;
@@ -57,9 +59,6 @@
 		bottom: 0;
 		z-index: 999;
 		background-color: #FFFFFF;
-}
-#app .tabbar figure{
-		margin: 0.189rem 0;
 }
 #app .tabbar img{
 		width: 0.58rem;

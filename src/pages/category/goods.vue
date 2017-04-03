@@ -5,14 +5,14 @@
 		<div class="classifyone">
 			<div class="content">
 				<!-- 商品顶部照片 -->
-				<div class="topimg" v-for="i in listMe(good)">
+				<div class="topimg" v-for="item in tempNum1">
 					<a href="#" >
-						<img :src="i.adImg.url" />
+						<img :src="item.adImg.url" />
 					</a>
 				</div>
 				<div class="tuijian" >
 					<div>
-						<figure v-for="item in listCmputed">
+						<figure v-for="item in tempNum">
 							<a href="#">
 								<img :src="item.checkicon" />
 							</a>
@@ -31,28 +31,29 @@
 	export default {
 		data() {
 			return {
-				good: []
+				good: [],
+				parentId:null,
+				tempNum:null,
+				tempNum1:null
 			}
 		},
-		computed:{
-            listCmputed:function(){
-                return this.good.filter(function(item){ 
-                    return item.parentId==648
-                })  
-            }
-        }, 
-        methods:{
-            listMe:function(good){ 
-                 return good.filter(function(i){  
-                    return i.id==648
-                })  
-            }  
-        },
 		created() {
+			this.paramsId = this.$route.params.userId;
+
 			this.$http.get('http://api5.wochu.cn/client/v1/goods/GetCategoryListByMenuId?parameters=%7B%22menu%22%3A0%7D')
 				.then(function(res){
 					this.good = res.body.data;
-				})
+					
+					//根据parentId，获取对应数据
+					var self = this;
+					this.tempNum = this.good.filter(function(item){ 
+	                    return item.parentId==self.paramsId
+	                });
+					this.tempNum1 = this.good.filter(function(item1){
+						return item1.id == self.paramsId
+					})	
+			});
+
 		},
 		mounted() {
 			
@@ -86,10 +87,11 @@
 }
 .classifyone .content .tuijian div{
 	display: flex;
-	justify-content: space-around;
-	flex-wrap: wrap;
+	justify-content: flex-start;/*左对齐*/
+	flex-wrap: wrap; /*换行*/
 }
 .classifyone .tuijian div figure{
+	width: 33.33%;
 	padding-top: 0.1rem;
 	padding-bottom: 0.2rem;
 }

@@ -12,10 +12,13 @@
 				<!-- 左边导航 -->
 				<div class="menu">
 					<ul>
-						<li ><router-link to="/category/tuijian">推荐</router-link></li>
-						<li v-for="nav in list">
-							<router-link to="/category/goods">{{ nav.name }}</router-link>
-							<!--<span>{{ nav.id }}</span>-->
+						<li >
+							<p><router-link to="/category/tuijian">推荐</router-link></p></li>
+						<li  v-for="nav in list">
+							<p @click="t(innerid,$event)">
+								<router-link to="/category/goods">{{ nav.name }}</router-link>
+							</p>
+							<!--<p>{{ nav.id }}</p>-->
 						</li>
 					</ul>
 				</div>
@@ -32,7 +35,28 @@
 	export default {
 		data() {
 			return {
-				navs: []
+				navs: [],
+				innerid:new Map([
+					['净菜', 648],
+					['蔬菜', 691],
+					['水果', 726],
+					['肉类', 722],
+					['禽蛋', 739],
+					['水产', 758],
+					['点心速食', 812],
+					['乳饮西点', 759],
+					['粮油副食', 806],
+					['休闲食品', 1215],
+					['烘培DIY', 1226]
+				])
+			}
+		},
+		methods:{
+			t:function(innerid,$event){
+//				console.log($event.currentTarget.innerText)
+//				console.log(innerid.get($event.currentTarget.innerText));
+				this.$router.push({ name: 'goods', 
+				params: { userId:  innerid.get($event.currentTarget.innerText)}})
 			}
 		},
 		computed:{
@@ -46,8 +70,8 @@
 			this.$http.get('http://api5.wochu.cn/client/v1/goods/GetCategoryListByMenuId?parameters=%7B%22menu%22%3A0%7D')
 				.then(function(res){
 					this.navs = res.body.data;
-					console.log(this.navs.id)
 				})
+
 		}
 	}
 </script>
@@ -92,12 +116,18 @@
 	display: flex;
 	align-items: center;
 }
-.main .menu ul li a{
+.main .menu ul li p{
+	width: 100%;
+	height: 1.2356rem;
+	line-height:1.2356rem;
+	text-align: center;
+}
+.main .menu ul li p a{
+	display: inline-block;
 	color: #666;
+	width: 2.0085rem;
 	height: 0.5627rem;
 	line-height: 0.5627rem;
-	width: 100%;
-	text-align: center;
 	font-size: 0.398rem;
 }
 /*点击背景无色*/

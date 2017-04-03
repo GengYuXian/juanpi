@@ -38,7 +38,7 @@ const routes = [
 	{ path: '/category', component: Category, children: [
 		{ path: '', component: Tuijian },
 		{ path: 'tuijian', component: Tuijian },
-		{ path: 'goods', component: Goods }
+		{ path: 'goods/id=:userId',name: "goods", component: Goods }
 	]},
 	{ path: '/cart', component: Cart},
 	{ path: '/mine', component: Mine}
